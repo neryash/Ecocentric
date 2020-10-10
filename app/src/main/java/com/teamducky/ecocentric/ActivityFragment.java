@@ -66,7 +66,7 @@ public class ActivityFragment extends Fragment implements OnMapReadyCallback {
     public void onResume() {
         mapView.onResume();
         super.onResume();
-    }
+    }//changes
 
 
     @Override
