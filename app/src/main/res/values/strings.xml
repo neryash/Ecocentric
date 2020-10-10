@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Ecocentric</string>
+    <string name="back4app_server_url">https://parseapi.back4app.com/</string>
+
+    <!-- Change the following strings as required -->
+    <string name="back4app_app_id">2uMUYgsFGYwSKcyBEv75bW2ngt9UIkI51Mkjfz19</string>
+    <string name="back4app_client_key">mhsLxGbjhtiwIAMw2ZdIIVUrN85w9W9g5vUxCtGE</string>
+
+    <string name="app_title">Ecocentric</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>

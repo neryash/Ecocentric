@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/nav_home"
+        android:icon="@drawable/ic_outline_home_24"
+        android:title="Home" />
+    <item
+        android:id="@+id/nav_activity"
+        android:icon="@drawable/ic_outline_map_24"
+        android:title="Activity" />
+    <item
+        android:id="@+id/nav_mindfulness"
+        android:icon="@drawable/ic_baseline_sync_24"
+        android:title="Mindfulness" />
+    <item
+        android:id="@+id/nav_rewards"
+        android:icon="@drawable/ic_outline_monetization_on_24"
+        android:title="Rewards" />
+</menu>
