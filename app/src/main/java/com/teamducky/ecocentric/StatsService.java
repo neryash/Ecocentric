@@ -41,9 +41,13 @@ import com.google.android.gms.location.DetectedActivity;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import pub.devrel.easypermissions.EasyPermissions;
 
@@ -63,6 +67,10 @@ public class StatsService extends Service implements SensorEventListener{
     SharedPreferences preferences;
     SharedPreferences.Editor editor;
     BroadcastReceiver broadcastReceiver;
+    String currentActivity = "still";
+    Location lastLoc = null;
+    int timeCycled=0,timeWalked=0,timeRan=0,distanceWalked=0,distanceCycles=0,distanceRan=0;
+    ArrayList<String> sessions;
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -84,6 +92,7 @@ public class StatsService extends Service implements SensorEventListener{
         sSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR);
         sensorManager.registerListener(this, sSensor, SensorManager.SENSOR_DELAY_NORMAL);
         startForeground(1, notification);
+        sessions = new ArrayList<>();
         mContext = this;
         locationManager = (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -106,21 +115,32 @@ public class StatsService extends Service implements SensorEventListener{
 
         LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver,
                 new IntentFilter(Constants.BROADCAST_DETECTED_ACTIVITY));
+
+        TimerTask task = new TimerTask() {
+
+            @Override
+            public void run() {
+                if(!currentActivity.equals("still")) {
+                    switch (currentActivity) {
+                        case "walking":
+                            timeWalked += 5;
+                            break;
+                        case "running":
+                            timeRan += 5;
+                            break;
+                        case "cycling":
+                            timeCycled += 5;
+                            break;
+                    }
+                }else{
+
+                }
+            }
+        };
+
+        Timer timer = new Timer();
+        timer.schedule(task, new Date(), 5000);
         return START_NOT_STICKY;
-    }
-
-    private boolean activityRecognitionPermissionApproved(){
-        boolean runningQOrLater =
-                android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q;
-        if (runningQOrLater) {
-
-            return PackageManager.PERMISSION_GRANTED == ActivityCompat.checkSelfPermission(
-                    this,
-                    Manifest.permission.ACTIVITY_RECOGNITION
-            );
-        } else {
-            return true;
-        }
     }
     @Override
     public void onSensorChanged(SensorEvent event) {
@@ -141,9 +161,33 @@ public class StatsService extends Service implements SensorEventListener{
     LocationListener locationListenerGPS=new LocationListener() {
         @Override
         public void onLocationChanged(android.location.Location location) {
-            double latitude=location.getLatitude();
-            double longitude=location.getLongitude();
-
+            if(!currentActivity.equals("still")) {
+                if(lastLoc == null){
+                    lastLoc = location;
+                }
+                float[] resultss = new float[1];
+                Location.distanceBetween(lastLoc.getLatitude(),lastLoc.getLongitude(),location.getLatitude(),location.getLongitude(),resultss);
+                switch (currentActivity) {
+                    case "walking":
+                        distanceWalked += resultss[0];
+                        break;
+                    case "running":
+                        distanceRan += resultss[0];
+                        break;
+                    case "cycling":
+                        distanceCycles += resultss[0];
+                        break;
+                }
+            }else{
+                long unixTime = System.currentTimeMillis() / 1000L;
+                Session session = new Session(timeWalked,timeCycled,timeRan,distanceWalked,distanceCycles,distanceRan,unixTime);
+                Gson gson = new Gson();
+                String json = gson.toJson(session);
+                sessions.add(json);
+                String allJsons = gson.toJson(sessions);
+                editor.putString("AllActivities",allJsons);
+                editor.commit();
+            }
         }
 
         @Override
@@ -186,34 +230,42 @@ public class StatsService extends Service implements SensorEventListener{
         switch (type) {
             case DetectedActivity.IN_VEHICLE: {
                 label = ("IN_VEHICLE");
+                currentActivity = "still";
                 break;
             }
             case DetectedActivity.ON_BICYCLE: {
                 label = ("ON_BICYCLE");
+                currentActivity = "cycling";
                 break;
             }
             case DetectedActivity.ON_FOOT: {
                 label = ("ON_FOOT");
+                currentActivity = "walking";
                 break;
             }
             case DetectedActivity.RUNNING: {
                 label = ("RUNNING");
+                currentActivity = "running";
                 break;
             }
             case DetectedActivity.STILL: {
                 label = ("STILL");
+                currentActivity = "still";
                 break;
             }
             case DetectedActivity.TILTING: {
-                label = ("TILTING");
+                //label = ("TILTING");
+                currentActivity = "walking";
                 break;
             }
             case DetectedActivity.WALKING: {
                 label = ("WALKING");
+                currentActivity = "walking";
                 break;
             }
             case DetectedActivity.UNKNOWN: {
                 label = ("UNKNOWN");
+                currentActivity = "unknown";
                 break;
             }
         }
@@ -221,7 +273,7 @@ public class StatsService extends Service implements SensorEventListener{
         Log.e("check", "User activity: " + label + ", Confidence: " + confidence);
 
         if (confidence > Constants.CONFIDENCE) {
-            Toast.makeText(StatsService.this,"User activity: " + label + ", Confidence: " + confidence,Toast.LENGTH_SHORT).show();
+            //Toast.makeText(StatsService.this,"User activity: " + label + ", Confidence: " + confidence,Toast.LENGTH_SHORT).show();
         }
     }
 }

@@ -42,7 +42,7 @@ public class HomeActivity extends AppCompatActivity {
                             selectedFragment = new RewardsFragment();
                             break;
                         case R.id.nav_mindfulness:
-                            selectedFragment = new MindfullFragment();
+                            selectedFragment = new MindfulFragment();
                             break;
                     }
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,

@@ -19,7 +19,6 @@
     <meta-data
         android:name="com.parse.CLIENT_KEY"
         android:value="@string/back4app_client_key" />
-
     <application
         android:name=".App"
         android:allowBackup="true"
@@ -29,6 +28,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".HomeActivity"></activity>
+
+        <meta-data android:name="com.google.android.maps.v2.API_KEY" android:value="AIzaSyAdRnz0DC8M19kNGeGdJ49roxGE9BuTgps"/>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
