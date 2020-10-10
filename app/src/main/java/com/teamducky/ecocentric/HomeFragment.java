@@ -66,7 +66,6 @@ public class HomeFragment extends Fragment {
                 foundQuote = true;
             }
         }
-        Log.i("json",jsontext);
         welcomeTextView = getView().findViewById(R.id.welcomeTxt);
         welcomeTextView.setText("Welcome Back " + ParseUser.getCurrentUser().getUsername());
     }

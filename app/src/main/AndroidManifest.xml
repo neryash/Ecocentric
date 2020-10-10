@@ -40,6 +40,12 @@
         <service
             android:name=".StatsService"
             android:foregroundServiceType="location" />
+        <service android:name=".ActivityRecognizedService"/>
+        <service
+            android:name=".DetectedActivitiesIntentService"
+            android:exported="false" />
+
+        <service android:name=".BackgroundDetectedActivitiesService"></service>
     </application>
 
 </manifest>
