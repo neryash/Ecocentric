@@ -6,10 +6,8 @@ import androidx.fragment.app.Fragment;
 
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.widget.TextView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.parse.ParseUser;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -42,7 +40,7 @@ public class HomeActivity extends AppCompatActivity {
                             selectedFragment = new RewardsFragment();
                             break;
                         case R.id.nav_mindfulness:
-                            selectedFragment = new MindfullFragment();
+                            selectedFragment = new MindfulFragment();
                             break;
                     }
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,

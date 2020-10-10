@@ -14,7 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
-public class MindfullFragment extends Fragment {
+public class MindfulFragment extends Fragment {
 
     @Nullable
     @Override
