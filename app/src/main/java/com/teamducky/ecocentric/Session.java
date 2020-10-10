@@ -1,18 +1,24 @@
 package com.teamducky.ecocentric;
 
 public class Session {
-    float time_walked,time_cycled,time_ran,distance,avg_speed_walk,avg_speed_run,avg_speed_cycled,steps_walked;
 
-    public Session(float time_walked, float time_cycled, float time_ran, float distance,
-                   float avg_speed_walk, float avg_speed_run, float avg_speed_cycled,
-                   float steps_walked) {
+    private double time_walked,time_cycled,time_ran, distance_walked, distance_cycled, distance_ran;
+    private double score = 0.;
+
+    public Session(double time_walked, double time_cycled, double time_ran, double distance_walked,
+                   double distance_cycled, double distance_ran) {
         this.time_walked = time_walked;
         this.time_cycled = time_cycled;
         this.time_ran = time_ran;
-        this.distance = distance;
-        this.avg_speed_walk = avg_speed_walk;
-        this.avg_speed_run = avg_speed_run;
-        this.avg_speed_cycled = avg_speed_cycled;
-        this.steps_walked = steps_walked;
+        this.distance_walked = distance_walked;
+        this.distance_cycled = distance_cycled;
+        this.distance_ran = distance_ran;
+
+        calcScore();
+    }
+
+    private void calcScore(){
+        this.score = Math.floor(Math.max(0.2*time_walked*distance_walked + 0.0555*time_cycled*
+                distance_cycled + 0.103*distance_ran*time_ran, 200.));
     }
 }
