@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 public class MindfullFragment extends Fragment {
 
@@ -22,6 +23,10 @@ public class MindfullFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ViewGroup layout = (ViewGroup) getView().findViewById(R.id.TaskView);
-
+        Task[] usrTasks = {}; //TODO: Change from manual to user based
+        for (Task task :
+                usrTasks) {
+            LinearLayout taskLayout = new LinearLayout();
+        }
     }
 }
