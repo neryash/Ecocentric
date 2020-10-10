@@ -37,8 +37,7 @@ public class MindfullFragment extends Fragment {
 
             RadioButton radioButton = new RadioButton(getContext());
             TextView taskText = new TextView(getContext());
-//            taskText.setBackgroundColor(Color.parseColor("#d6dcc2")); //TODO: use drawable for text backgroumd, fix margins
-            // TODO: use montserrat font
+//            taskText.setBackgroundColor(Color.parseColor("#d6dcc2")); //TODO: use drawable for text backgroumd, fix marginsת use montserrat font
             taskText.setText(task.toString());
 
             taskLayout.addView(radioButton);
