@@ -26,7 +26,7 @@ public class MindfullFragment extends Fragment {
         Task[] usrTasks = {}; //TODO: Change from manual to user based
         for (Task task :
                 usrTasks) {
-            LinearLayout taskLayout = new LinearLayout();
+            LinearLayout taskLayout = new LinearLayout(); //do smth
         }
     }
 }
