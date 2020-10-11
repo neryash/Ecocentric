@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import android.Manifest;
 import android.app.ActivityManager;
@@ -32,6 +33,7 @@ public class HomeActivity extends AppCompatActivity implements EasyPermissions.P
     private TextView allPointsTxt;
     private int allPoints;
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
+    private BroadcastReceiver mMessageReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +66,24 @@ public class HomeActivity extends AppCompatActivity implements EasyPermissions.P
                 startService(intent);
             }
         }
+        try {
+            ParseUser.getCurrentUser().fetch();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         allPointsTxt.setText(ParseUser.getCurrentUser().get("points")+"");
+        mMessageReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                try {
+                    ParseUser.getCurrentUser().fetch();
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                allPointsTxt.setText(ParseUser.getCurrentUser().get("points")+"");
+            }
+        };
+
     }
 
     @Override
@@ -149,32 +168,16 @@ public class HomeActivity extends AppCompatActivity implements EasyPermissions.P
     @Override
     protected void onResume() {
         super.onResume();
-        mBroadcastReceiver = new BroadcastReceiver(){
+        LocalBroadcastManager.getInstance(this)
+                .registerReceiver(mMessageReceiver,
+                        new IntentFilter("update"));
 
-            @Override
-            public void onReceive(Context context, Intent intent){
-           /* Toast.makeText(context, "Message is: "+ intent.getStringExtra("message"), Toast.LENGTH_LONG)
-                    .show();*/
-                String action = intent.getAction();
-                if(action.equals("updated")){
-                    try {
-                        ParseUser.getCurrentUser().fetchIfNeeded();
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
-                    allPointsTxt.setText((int)ParseUser.getCurrentUser().get("points")+"");
-                }
-            }
-
-        };
-
-        IntentFilter filter = new IntentFilter("msg");
-        registerReceiver(mBroadcastReceiver,filter);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        unregisterReceiver(mBroadcastReceiver);
+        LocalBroadcastManager.getInstance(this)
+                .unregisterReceiver(mMessageReceiver);
     }
 }

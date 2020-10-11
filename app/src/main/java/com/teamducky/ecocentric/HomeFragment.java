@@ -9,6 +9,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.parse.ParseException;
 import com.parse.ParseUser;
 
 import java.io.IOException;
@@ -78,15 +80,17 @@ public class HomeFragment extends Fragment {
             public void onClick(View v) {
                 rotate_Clockwise(getView().findViewById(R.id.refreshBtn));
                 welcomeTextView = getView().findViewById(R.id.totalPoints);
+                try {
+                    ParseUser.getCurrentUser().fetch();
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
                 welcomeTextView.setText("Points: " + ParseUser.getCurrentUser().get("points"));
                 SharedPreferences prfs = getActivity().getSharedPreferences("sportsData", Context.MODE_PRIVATE);
                 int allSteps = prfs.getInt("steps", 0);
                 stepsData.setText("Steps: " + allSteps);
 
-                Intent intent = new Intent("updated");
-                intent.setPackage(getActivity().getApplicationContext().getPackageName());
-                intent.putExtra("message","updated");
-                getActivity().getApplicationContext().sendBroadcast(intent);
+                sendUpdated();
             }
         });
     }
@@ -94,5 +98,10 @@ public class HomeFragment extends Fragment {
         ObjectAnimator rotate = ObjectAnimator.ofFloat(view, "rotation", 0f, 360f);
         rotate.setDuration(500);
         rotate.start();
+    }
+    private void sendUpdated() {
+        Intent intent = new Intent("updated");
+        intent.putExtra("message", "updated");
+        LocalBroadcastManager.getInstance(getContext()).sendBroadcast(intent);
     }
 }

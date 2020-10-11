@@ -336,10 +336,7 @@ public class StatsService extends Service implements SensorEventListener{
                         @Override
                         public void done(ParseException e) {
                             if(e == null){
-                                Intent intent = new Intent("updated");
-                                intent.setPackage(getPackageName());
-                                intent.putExtra("message","updated");
-                                getApplicationContext().sendBroadcast(intent);
+                                sendUpdated();
                             }
                         }
                     });
@@ -352,5 +349,10 @@ public class StatsService extends Service implements SensorEventListener{
                 }
             //}
         }
+    }
+    private void sendUpdated() {
+        Intent intent = new Intent("updated");
+        intent.putExtra("message", "updated");
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
     }
 }
