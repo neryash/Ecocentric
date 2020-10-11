@@ -28,7 +28,8 @@ public class MindfulFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ViewGroup layout = (ViewGroup) getView().findViewById(R.id.TaskView);
-        Task[] usrTasks = {new Task(5, "running", 500)}; //TODO: Change from manual to user based
+        GoalsFragment goalsFragment = new GoalsFragment();
+        Task[] usrTasks = goalsFragment.getChosenTasks();
         for (Task task :
                 usrTasks) {
             LinearLayout taskLayout = new LinearLayout(getContext());
