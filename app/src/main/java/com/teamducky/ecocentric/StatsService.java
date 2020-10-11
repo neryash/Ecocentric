@@ -268,7 +268,8 @@ public class StatsService extends Service implements SensorEventListener{
             currentActivity = currentActivityBefore;
         }
         if(currentActivity.equals("still")){
-            if(timeWalked > 90 && timeCycled > 90 && timeRan > 90 && distanceWalked > 40 && distanceCycles > 40 && distanceRan > 40){
+            if((timeWalked > 90 && distanceWalked > 40) || (timeCycled > 90 && distanceCycles > 40) || (timeRan > 90 && distanceRan > 40)){
+            //if(timeWalked > 90 && timeCycled > 90 && timeRan > 90 && distanceWalked > 40 && distanceCycles > 40 && distanceRan > 40){
                 long unixTime = System.currentTimeMillis() / 1000L;
                 Session session = new Session(timeWalked,timeCycled,timeRan,distanceWalked,distanceCycles,distanceRan,unixTime);
                 Gson gson = new Gson();
