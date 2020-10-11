@@ -9,6 +9,17 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
     <uses-permission android:name="com.google.android.gms.permission.ACTIVITY_RECOGNITION" />
     <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION"/>
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES"/>
+
+    <uses-feature
+        android:glEsVersion="0x00020000"
+        android:required="true"/>
+
+    <permission
+        android:name="com.example.permission.MAPS_RECEIVE"
+        android:protectionLevel="signature"/>
+    <uses-permission android:name="com.example.permission.MAPS_RECEIVE"/>
+
 
     <meta-data
         android:name="com.parse.SERVER_URL"
@@ -29,6 +40,9 @@
         android:theme="@style/AppTheme">
         <activity android:name=".HomeActivity"></activity>
 
+<!--        <meta-data-->
+<!--            android:name="com.google.android.geo.API_KEY"-->
+<!--            android:value="@string/google_maps_key" />-->
         <meta-data android:name="com.google.android.maps.v2.API_KEY" android:value="AIzaSyAdRnz0DC8M19kNGeGdJ49roxGE9BuTgps"/>
         <activity android:name=".MainActivity">
             <intent-filter>
@@ -50,7 +64,6 @@
         <service
             android:name=".DetectedActivitiesIntentService"
             android:exported="false" />
-
         <service android:name=".BackgroundDetectedActivitiesService"></service>
     </application>
 
