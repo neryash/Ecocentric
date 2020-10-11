@@ -68,7 +68,7 @@ public class ActivityFragment extends Fragment {
                         ((int)LinearLayout.LayoutParams.MATCH_PARENT,(int) LinearLayout.LayoutParams.WRAP_CONTENT);
                 params.setMargins(toDp(32),toDp(16),toDp(32),toDp(16));
                 params.topMargin  = 20;
-                tv[i].setText("Session time: " + session.sumTime() + "\nPoints awarded: " + session.calcScore() + "\nSession distance: " + session.sumDist() + "\nSession activities: " + joinArrayList(session.getActivities()) + "\nSession date: " + new java.util.Date((long)session.getSessionWriteTime()*1000));
+                tv[i].setText("Session time: " + session.sumTime() + "s\nPoints awarded: " + session.calcScore() + "\nSession distance: " + session.sumDist() + "m\nSession activities: " + joinArrayList(session.getActivities()) + "\nSession date: " + new java.util.Date((long)session.getSessionWriteTime()*1000));
                 tv[i].setTextSize((float) 14);
                 tv[i].setBackground(getActivity().getDrawable(R.drawable.txt_back));
 

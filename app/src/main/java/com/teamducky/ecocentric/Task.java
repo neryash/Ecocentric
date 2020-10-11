@@ -5,29 +5,39 @@ public class Task {
     private int goal;
     private String type;
     private int points;
+    private boolean isActive;
 
-    public Task(int goal, String type, int points) {
+    public Task(int goal, String type, int points,boolean isActive) {
         this.goal = goal;
         this.type = type;
         this.points = points;
+        this.isActive = isActive;
     }
 
-    public String toString(){
+    public String toTaskString(){
         String msg = "";
         switch (type){
             case "cycling":
-                msg =  "Cycle for "+goal+"km.";
+                msg =  "Cycle for "+goal+" km.";
                 break;
             case "walking":
-                msg =  "Walk "+goal+"steps.";
+                msg =  "Walk "+goal+" km.";
                 break;
             case "running":
-                msg = "Run for "+goal+"km.";
+                msg = "Run for "+goal+" km.";
                 break;
             default:
                 msg = type;
         }
         return msg;
+    }
+
+    public int getPoints() {
+        return points;
+    }
+
+    public boolean isActive() {
+        return isActive;
     }
 
     public int getGoal() {

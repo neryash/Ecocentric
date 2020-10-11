@@ -69,6 +69,23 @@ public class MainActivity extends AppCompatActivity {
                 findViewById(R.id.logCont).setVisibility(View.VISIBLE);
             }
         });
+
+        findViewById(R.id.back).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                findViewById(R.id.signCont).setVisibility(View.GONE);
+                findViewById(R.id.mainCont).setVisibility(View.VISIBLE);
+                findViewById(R.id.logCont).setVisibility(View.GONE);
+            }
+        });
+        findViewById(R.id.backa).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                findViewById(R.id.signCont).setVisibility(View.GONE);
+                findViewById(R.id.mainCont).setVisibility(View.VISIBLE);
+                findViewById(R.id.logCont).setVisibility(View.GONE);
+            }
+        });
         if(ParseUser.getCurrentUser() != null){
             Intent intent = new Intent(MainActivity.this, HomeActivity.class);
             startActivity(intent);
@@ -82,6 +99,7 @@ public class MainActivity extends AppCompatActivity {
                         if(e == null){
                             Intent intent = new Intent(MainActivity.this,HomeActivity.class);
                             startActivity(intent);
+                            finish();
                         }else{
                             Toast.makeText(MainActivity.this, "There was an error " + e.getMessage(), Toast.LENGTH_SHORT).show();
                         }

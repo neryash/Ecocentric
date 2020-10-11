@@ -7,7 +7,10 @@ import androidx.fragment.app.Fragment;
 
 import android.Manifest;
 import android.app.ActivityManager;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -25,6 +28,7 @@ import pub.devrel.easypermissions.EasyPermissions;
 
 public class HomeActivity extends AppCompatActivity implements EasyPermissions.PermissionCallbacks{
 
+    private BroadcastReceiver mBroadcastReceiver;
     private TextView allPointsTxt;
     private int allPoints;
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
@@ -62,6 +66,15 @@ public class HomeActivity extends AppCompatActivity implements EasyPermissions.P
         }
         allPointsTxt.setText((int)ParseUser.getCurrentUser().get("points")+"");
     }
+
+    @Override
+    public void onBackPressed() {
+        Intent startMain = new Intent(Intent.ACTION_MAIN);
+        startMain.addCategory(Intent.CATEGORY_HOME);
+        startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(startMain);
+    }
+
     public boolean checkServiceRunning(Class<?> serviceClass){
         ActivityManager manager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
         for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE))
@@ -133,4 +146,35 @@ public class HomeActivity extends AppCompatActivity implements EasyPermissions.P
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mBroadcastReceiver = new BroadcastReceiver(){
+
+            @Override
+            public void onReceive(Context context, Intent intent){
+           /* Toast.makeText(context, "Message is: "+ intent.getStringExtra("message"), Toast.LENGTH_LONG)
+                    .show();*/
+                String action = intent.getAction();
+                if(action.equals("updated")){
+                    try {
+                        ParseUser.getCurrentUser().fetchIfNeeded();
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    allPointsTxt.setText((int)ParseUser.getCurrentUser().get("points")+"");
+                }
+            }
+
+        };
+
+        IntentFilter filter = new IntentFilter("msg");
+        registerReceiver(mBroadcastReceiver,filter);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiver(mBroadcastReceiver);
+    }
 }

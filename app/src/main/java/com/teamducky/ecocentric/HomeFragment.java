@@ -1,5 +1,6 @@
 package com.teamducky.ecocentric;
 
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -68,8 +69,24 @@ public class HomeFragment extends Fragment {
             }
         }
         welcomeTextView = getView().findViewById(R.id.welcomeTxt);
-        welcomeTextView.setText("Welcome Back " + ParseUser.getCurrentUser().getUsername());
+        welcomeTextView.setText("Welcome Back, " + ParseUser.getCurrentUser().getUsername());
         welcomeTextView = getView().findViewById(R.id.totalPoints);
         welcomeTextView.setText("Points: " + ParseUser.getCurrentUser().get("points"));
+        getView().findViewById(R.id.refreshBtn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                rotate_Clockwise(getView().findViewById(R.id.refreshBtn));
+                welcomeTextView = getView().findViewById(R.id.totalPoints);
+                welcomeTextView.setText("Points: " + ParseUser.getCurrentUser().get("points"));
+                SharedPreferences prfs = getActivity().getSharedPreferences("sportsData", Context.MODE_PRIVATE);
+                int allSteps = prfs.getInt("steps", 0);
+                stepsData.setText("Steps: " + allSteps);
+            }
+        });
+    }
+    public void rotate_Clockwise(View view) {
+        ObjectAnimator rotate = ObjectAnimator.ofFloat(view, "rotation", 0f, 360f);
+        rotate.setDuration(500);
+        rotate.start();
     }
 }

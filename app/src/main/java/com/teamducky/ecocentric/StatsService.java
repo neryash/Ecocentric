@@ -45,6 +45,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.parse.ParseException;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -330,7 +331,18 @@ public class StatsService extends Service implements SensorEventListener{
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
-                    ParseUser.getCurrentUser().put("points",(int)ParseUser.getCurrentUser().get("points") + session.calcScore());
+                    ParseUser.getCurrentUser().put("points",Math.floor((int)ParseUser.getCurrentUser().get("points") + session.calcScore()));
+                    ParseUser.getCurrentUser().saveInBackground(new SaveCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            if(e == null){
+                                Intent intent = new Intent("updated");
+                                intent.setPackage(getPackageName());
+                                intent.putExtra("message","updated");
+                                getApplicationContext().sendBroadcast(intent);
+                            }
+                        }
+                    });
                     timeCycled=0;
                     timeWalked=0;
                     timeRan=0;
