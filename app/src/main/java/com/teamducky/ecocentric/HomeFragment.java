@@ -24,7 +24,7 @@ import java.util.Random;
 
 public class HomeFragment extends Fragment {
 
-    private TextView welcomeTextView,quotesTxt,stepsData;
+    private TextView welcomeTextView, quotesTxt, stepsData;
 
     @Nullable
     @Override
