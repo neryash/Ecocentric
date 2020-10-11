@@ -73,8 +73,7 @@ public class Session {
     }
 
     public double calcScore(){
-        double finalScore = score = Math.floor(Math.min(0.2*time_walked*distance_walked + 0.0555*time_cycled*
-                distance_cycled + 0.103*distance_ran*time_ran, 200.));
-        return finalScore;
+        return score = Math.floor(Math.min(0.2*(time_walked/60)*(distance_walked/1000) + 0.0555*(time_cycled/60)*
+                (distance_cycled/1000) + 0.103*(distance_ran/1000)*(time_ran/60), 200.));
     }
 }
