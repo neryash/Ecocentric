@@ -96,7 +96,9 @@ public class StatsService extends Service implements SensorEventListener{
         String data = prfs.getString("AllActivities","");
         Gson gson = new Gson();
         sessions = gson.fromJson(data, new TypeToken<List<String>>(){}.getType());
-        //sessions = new ArrayList<>();
+        if(sessions == null || sessions.size() == 0){
+            sessions = new ArrayList<>();
+        }
         mContext = this;
         locationManager = (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -268,23 +270,25 @@ public class StatsService extends Service implements SensorEventListener{
             currentActivity = currentActivityBefore;
         }
         if(currentActivity.equals("still")){
-            if((timeWalked > 90 && distanceWalked > 40) || (timeCycled > 90 && distanceCycles > 40) || (timeRan > 90 && distanceRan > 40)){
+            //if((timeWalked > 90 && distanceWalked > 40) || (timeCycled > 90 && distanceCycles > 40) || (timeRan > 90 && distanceRan > 40)){
             //if(timeWalked > 90 && timeCycled > 90 && timeRan > 90 && distanceWalked > 40 && distanceCycles > 40 && distanceRan > 40){
                 long unixTime = System.currentTimeMillis() / 1000L;
                 Session session = new Session(timeWalked,timeCycled,timeRan,distanceWalked,distanceCycles,distanceRan,unixTime);
-                Gson gson = new Gson();
-                String json = gson.toJson(session);
-                sessions.add(json);
-                String allJsons = gson.toJson(sessions);
-                editor.putString("AllActivities",allJsons);
-                editor.commit();
-                timeCycled=0;
-                timeWalked=0;
-                timeRan=0;
-                distanceWalked=0;
-                distanceCycles=0;
-                distanceRan=0;
-            }
+                if(session.sumDist() > 40 && session.sumTime() > 90){
+                    Gson gson = new Gson();
+                    String json = gson.toJson(session);
+                    sessions.add(json);
+                    String allJsons = gson.toJson(sessions);
+                    editor.putString("AllActivities",allJsons);
+                    editor.commit();
+                    timeCycled=0;
+                    timeWalked=0;
+                    timeRan=0;
+                    distanceWalked=0;
+                    distanceCycles=0;
+                    distanceRan=0;
+                }
+            //}
         }
     }
 }
