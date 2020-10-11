@@ -38,10 +38,9 @@ import java.util.List;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
 
-public class MainActivity extends AppCompatActivity implements EasyPermissions.PermissionCallbacks {
+public class MainActivity extends AppCompatActivity {
 
     private EditText sPass,sMail, lPass,lMail,sName;
-    public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,11 +69,6 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                 findViewById(R.id.logCont).setVisibility(View.VISIBLE);
             }
         });
-        try {
-            ParseUser.getCurrentUser().fetchIfNeeded();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
         if(ParseUser.getCurrentUser() != null){
             Intent intent = new Intent(MainActivity.this, HomeActivity.class);
             startActivity(intent);
@@ -103,15 +97,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                 requestPermissions(new String[]{Manifest.permission.ACTIVITY_RECOGNITION}, 96);
             }
         }
-        if(ContextCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED){
-            requestLocationPermission();
-        }else{
-            Intent intent = new Intent(MainActivity.this,StatsService.class);
-            startService(intent);
-        }
-        requestUpdates();
+
         findViewById(R.id.signupbtn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -142,41 +128,6 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
 
     }
 
-
-    private final int REQUEST_LOCATION_PERMISSION = 1;
-
-    private void requestUpdates(){
-
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
-        // Forward results to EasyPermissions
-        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
-    }
-
-    @AfterPermissionGranted(REQUEST_LOCATION_PERMISSION)
-    public void requestLocationPermission() {
-        String[] perms = {Manifest.permission.ACCESS_FINE_LOCATION};
-        if(EasyPermissions.hasPermissions(this, perms)) {
-            Toast.makeText(this, "Permission already granted", Toast.LENGTH_SHORT).show();
-        }
-        else {
-            EasyPermissions.requestPermissions(this, "Please grant the location permission", REQUEST_LOCATION_PERMISSION, perms);
-        }
-    }
-
-    @Override
-    public void onPermissionsGranted(int requestCode, @NonNull List<String> perms) {
-
-    }
-
-    @Override
-    public void onPermissionsDenied(int requestCode, @NonNull List<String> perms) {
-
-    }
 
 
 }

@@ -154,7 +154,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/montserrat_semibold"
             android:paddingLeft="30dp"
-            android:text="Signup"
+            android:text="0."
             android:textColor="#FFFFFF"
             android:textSize="30sp" />
 
@@ -189,6 +189,6 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="100dp"
             android:background="@drawable/shape"
-            android:text="Signup" />
+            android:text="Login" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

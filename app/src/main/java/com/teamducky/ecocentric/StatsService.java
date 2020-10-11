@@ -47,6 +47,7 @@ import com.parse.ParseException;
 import com.parse.ParseUser;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Timer;
@@ -155,9 +156,48 @@ public class StatsService extends Service implements SensorEventListener{
         Sensor sensor = event.sensor;
 
         if (sensor.getType() == Sensor.TYPE_STEP_DETECTOR) {
+            int currDay = Calendar.SUNDAY;
+            SharedPreferences prfs = StatsService.this.getSharedPreferences("sportsData", Context.MODE_PRIVATE);
+            int data = prfs.getInt("day",1);
+            if(currDay != data){
+                steps = 0;
+            }
             steps++;
             editor.putInt("steps",(int) steps);
             editor.apply();
+            Calendar calendar = Calendar.getInstance();
+            int day = calendar.get(Calendar.DAY_OF_WEEK);
+
+            switch (day) {
+                case Calendar.SUNDAY:
+                    editor.putInt("day",1);
+                    editor.apply();
+                    break;
+                case Calendar.MONDAY:
+                    editor.putInt("day",2);
+                    editor.apply();
+                    break;
+                case Calendar.TUESDAY:
+                    editor.putInt("day",3);
+                    editor.apply();
+                    break;
+                case Calendar.WEDNESDAY:
+                    editor.putInt("day",4);
+                    editor.apply();
+                    break;
+                case Calendar.THURSDAY:
+                    editor.putInt("day",5);
+                    editor.apply();
+                    break;
+                case Calendar.FRIDAY:
+                    editor.putInt("day",6);
+                    editor.apply();
+                    break;
+                case Calendar.SATURDAY:
+                    editor.putInt("day",7);
+                    editor.apply();
+                    break;
+            }
         }
     }
 
