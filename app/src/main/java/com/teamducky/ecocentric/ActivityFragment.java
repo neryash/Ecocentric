@@ -57,28 +57,36 @@ public class ActivityFragment extends Fragment {
         SharedPreferences prfs = getActivity().getSharedPreferences("sportsData", Context.MODE_PRIVATE);
         String data = prfs.getString("AllActivities","");
         Gson gson = new Gson();
-        sessions = gson.fromJson(data, new TypeToken<List<String>>(){}.getType());
-        final TextView[] tv = new TextView[sessions.size()];
-        for(int i = 0; i < sessions.size(); i++){
-            Session session = gson.fromJson(sessions.get(i),Session.class);
-            tv[i] = new TextView(getContext());
-            LinearLayout.LayoutParams params=new LinearLayout.LayoutParams
-                    ((int)LinearLayout.LayoutParams.MATCH_PARENT,(int) LinearLayout.LayoutParams.WRAP_CONTENT);
-            params.setMargins(toDp(32),toDp(16),toDp(32),toDp(16));
-            params.topMargin  = 20;
-            tv[i].setText("Session time: " + session.sumTime() + "\nPoints awarded: " + session.calcScore() + "\nSession distance: " + session.sumDist() + "\nSession activities: " + session.getActivities());
-            tv[i].setTextSize((float) 14);
-            tv[i].setBackground(getActivity().getDrawable(R.drawable.txt_back));
+        if(data.trim().length() > 0){
+            sessions = gson.fromJson(data, new TypeToken<List<String>>(){}.getType());
+            final TextView[] tv = new TextView[sessions.size()];
+            for(int i = 0; i < sessions.size(); i++){
+                Session session = gson.fromJson(sessions.get(i),Session.class);
+                tv[i] = new TextView(getContext());
+                LinearLayout.LayoutParams params=new LinearLayout.LayoutParams
+                        ((int)LinearLayout.LayoutParams.MATCH_PARENT,(int) LinearLayout.LayoutParams.WRAP_CONTENT);
+                params.setMargins(toDp(32),toDp(16),toDp(32),toDp(16));
+                params.topMargin  = 20;
+                tv[i].setText("Session time: " + session.sumTime() + "\nPoints awarded: " + session.calcScore() + "\nSession distance: " + session.sumDist() + "\nSession activities: " + joinArrayList(session.getActivities()));
+                tv[i].setTextSize((float) 14);
+                tv[i].setBackground(getActivity().getDrawable(R.drawable.txt_back));
 
-            tv[i].setLayoutParams(params);
-            linearLayout.addView(tv[i]);
+                tv[i].setLayoutParams(params);
+                linearLayout.addView(tv[i]);
+            }
+        }else{
+            getView().findViewById(R.id.noActivities).setVisibility(View.VISIBLE);
         }
     }
     private String joinArrayList(ArrayList<String> list){
         String finalString = "";
-        for (String s : list)
+        for (int i = 0; i < list.size();i++)
         {
-            finalString += s + ",";
+            if(i < list.size()-1){
+                finalString += list.get(i) + ", ";
+            }else{
+                finalString += list.get(i);
+            }
         }
         return finalString;
     }

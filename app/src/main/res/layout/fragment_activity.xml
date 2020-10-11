@@ -33,7 +33,25 @@
             android:id="@+id/activityLayouts"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"/>
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/noActivities"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="50dp"
+                android:layout_marginEnd="50dp"
+                android:background="@drawable/txt_back"
+                android:text="No activities detected, try taking a walk, a run or a bicycle ride to see them appear!"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.103"
+                tools:layout_conversion_absoluteHeight="39dp"
+                tools:layout_conversion_absoluteWidth="69dp" />
+        </LinearLayout>
     </ScrollView>
 
 
