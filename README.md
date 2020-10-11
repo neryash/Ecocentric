@@ -20,4 +20,4 @@ We all just did the main development parts on Android Studio, some people dealin
 ## Downloading the app:
 This is and android APK file
 PLEASE ENABLE LOCATION, IT IS VITAL FOR APP PERFORMANCE
-https://drive.google.com/file/d/1hLmbVlytTmyb_6jm0svvDWZuxja3moyS/view?usp=sharing
+https://drive.google.com/file/d/176X6FqQZtD6AFuWvEgHDMGX5JTRGAQHy/view?usp=sharing
