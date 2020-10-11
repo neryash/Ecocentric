@@ -42,6 +42,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -92,7 +93,10 @@ public class StatsService extends Service implements SensorEventListener{
         sSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR);
         sensorManager.registerListener(this, sSensor, SensorManager.SENSOR_DELAY_NORMAL);
         startForeground(1, notification);
-        sessions = new ArrayList<>();
+        String data = prfs.getString("AllActivities","");
+        Gson gson = new Gson();
+        sessions = gson.fromJson(data, new TypeToken<List<String>>(){}.getType());
+        //sessions = new ArrayList<>();
         mContext = this;
         locationManager = (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -165,28 +169,18 @@ public class StatsService extends Service implements SensorEventListener{
                 if(lastLoc == null){
                     lastLoc = location;
                 }
-                float[] resultss = new float[1];
-                Location.distanceBetween(lastLoc.getLatitude(),lastLoc.getLongitude(),location.getLatitude(),location.getLongitude(),resultss);
+                float dist = location.distanceTo(lastLoc);
                 switch (currentActivity) {
                     case "walking":
-                        distanceWalked += resultss[0];
+                        distanceWalked += dist;
                         break;
                     case "running":
-                        distanceRan += resultss[0];
+                        distanceRan += dist;
                         break;
                     case "cycling":
-                        distanceCycles += resultss[0];
+                        distanceCycles += dist;
                         break;
                 }
-            }else{
-                long unixTime = System.currentTimeMillis() / 1000L;
-                Session session = new Session(timeWalked,timeCycled,timeRan,distanceWalked,distanceCycles,distanceRan,unixTime);
-                Gson gson = new Gson();
-                String json = gson.toJson(session);
-                sessions.add(json);
-                String allJsons = gson.toJson(sessions);
-                editor.putString("AllActivities",allJsons);
-                editor.commit();
             }
         }
 
@@ -226,54 +220,70 @@ public class StatsService extends Service implements SensorEventListener{
     }
     private void handleUserActivity(int type, int confidence) {
         String label = "UNKNOWN";
-
+        String currentActivityBefore = "still";
         switch (type) {
             case DetectedActivity.IN_VEHICLE: {
                 label = ("IN_VEHICLE");
-                currentActivity = "still";
+                currentActivityBefore = "still";
                 break;
             }
             case DetectedActivity.ON_BICYCLE: {
                 label = ("ON_BICYCLE");
-                currentActivity = "cycling";
+                currentActivityBefore = "cycling";
                 break;
             }
             case DetectedActivity.ON_FOOT: {
                 label = ("ON_FOOT");
-                currentActivity = "walking";
+                currentActivityBefore = "walking";
                 break;
             }
             case DetectedActivity.RUNNING: {
                 label = ("RUNNING");
-                currentActivity = "running";
+                currentActivityBefore = "running";
                 break;
             }
             case DetectedActivity.STILL: {
                 label = ("STILL");
-                currentActivity = "still";
+                currentActivityBefore = "still";
                 break;
             }
             case DetectedActivity.TILTING: {
                 //label = ("TILTING");
-                currentActivity = "walking";
+                currentActivityBefore= "walking";
                 break;
             }
             case DetectedActivity.WALKING: {
                 label = ("WALKING");
-                currentActivity = "walking";
+                currentActivityBefore = "walking";
                 break;
             }
             case DetectedActivity.UNKNOWN: {
                 label = ("UNKNOWN");
-                currentActivity = "unknown";
+                currentActivityBefore = "unknown";
                 break;
             }
         }
 
-        Log.e("check", "User activity: " + label + ", Confidence: " + confidence);
-
         if (confidence > Constants.CONFIDENCE) {
-            //Toast.makeText(StatsService.this,"User activity: " + label + ", Confidence: " + confidence,Toast.LENGTH_SHORT).show();
+            currentActivity = currentActivityBefore;
+        }
+        if(currentActivity.equals("still")){
+            if(timeWalked > 90 && timeCycled > 90 && timeRan > 90 && distanceWalked > 40 && distanceCycles > 40 && distanceRan > 40){
+                long unixTime = System.currentTimeMillis() / 1000L;
+                Session session = new Session(timeWalked,timeCycled,timeRan,distanceWalked,distanceCycles,distanceRan,unixTime);
+                Gson gson = new Gson();
+                String json = gson.toJson(session);
+                sessions.add(json);
+                String allJsons = gson.toJson(sessions);
+                editor.putString("AllActivities",allJsons);
+                editor.commit();
+                timeCycled=0;
+                timeWalked=0;
+                timeRan=0;
+                distanceWalked=0;
+                distanceCycles=0;
+                distanceRan=0;
+            }
         }
     }
 }

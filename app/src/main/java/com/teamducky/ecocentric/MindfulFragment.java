@@ -1,5 +1,7 @@
 package com.teamducky.ecocentric;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 
@@ -42,6 +44,12 @@ public class MindfulFragment extends Fragment {
 
             taskLayout.addView(radioButton);
             taskLayout.addView(taskText);
+            SharedPreferences preferences;
+            SharedPreferences.Editor editor;
+            preferences = getContext().getSharedPreferences("sportsData", Context.MODE_PRIVATE);
+            editor = preferences.edit();
+            editor.putString("AllActivities","");
+            editor.commit();
         }
     }
 }
