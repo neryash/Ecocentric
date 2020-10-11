@@ -61,7 +61,7 @@ public class ProfileFragment extends Fragment {
         });
         QR = getView().findViewById(R.id.QRcodeImg);
 
-        QRGEncoder qrgEncoder = new QRGEncoder(ParseUser.getCurrentUser().getObjectId(), null, QRGContents.Type.TEXT, 400);
+        QRGEncoder qrgEncoder = new QRGEncoder(ParseUser.getCurrentUser().getObjectId(), null, QRGContents.Type.TEXT, 600);
         qrgEncoder.setColorBlack(Color.BLACK);
         qrgEncoder.setColorWhite(Color.WHITE);
         // Getting QR-Code as Bitmap
