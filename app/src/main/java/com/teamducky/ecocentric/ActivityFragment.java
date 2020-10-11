@@ -1,6 +1,7 @@
 package com.teamducky.ecocentric;
 
 import android.Manifest;
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -13,6 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -78,6 +80,17 @@ public class ActivityFragment extends Fragment {
         }else{
             getView().findViewById(R.id.noActivities).setVisibility(View.VISIBLE);
         }
+        getView().findViewById(R.id.refreshSessions).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                rotate_Clockwise(getView().findViewById(R.id.refreshSessions));
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        new HomeFragment()).commit();
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        new ActivityFragment()).commit();
+            }
+        });
+
     }
     private String joinArrayList(ArrayList<String> list){
         String finalString = "";
@@ -100,5 +113,10 @@ public class ActivityFragment extends Fragment {
                 r.getDisplayMetrics()
         );
         return px;
+    }
+    public void rotate_Clockwise(View view) {
+        ObjectAnimator rotate = ObjectAnimator.ofFloat(view, "rotation", 0f, 360f);
+        rotate.setDuration(500);
+        rotate.start();
     }
 }
