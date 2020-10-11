@@ -43,6 +43,8 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.parse.ParseException;
+import com.parse.ParseUser;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -282,6 +284,12 @@ public class StatsService extends Service implements SensorEventListener{
                     String allJsons = gson.toJson(sessions);
                     editor.putString("AllActivities",allJsons);
                     editor.commit();
+                    try {
+                        ParseUser.getCurrentUser().fetchIfNeeded();
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    ParseUser.getCurrentUser().put("points",(int)ParseUser.getCurrentUser().get("points") + session.calcScore());
                     timeCycled=0;
                     timeWalked=0;
                     timeRan=0;

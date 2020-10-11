@@ -65,11 +65,20 @@
                 android:layout_weight="1"
                 android:background="@drawable/txt_back"
                 android:elevation="16dp"
-                android:orientation="horizontal">
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/stepsData"
                     android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/montserrat_regular"
+                    android:text="----"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/totalPoints"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:fontFamily="@font/montserrat_regular"

@@ -30,6 +30,7 @@ import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseInstallation;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 import com.parse.SignUpCallback;
 
 import java.util.List;
@@ -69,6 +70,11 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                 findViewById(R.id.logCont).setVisibility(View.VISIBLE);
             }
         });
+        try {
+            ParseUser.getCurrentUser().fetchIfNeeded();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         if(ParseUser.getCurrentUser() != null){
             Intent intent = new Intent(MainActivity.this, HomeActivity.class);
             startActivity(intent);
@@ -109,7 +115,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
         findViewById(R.id.signupbtn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ParseUser parseUser = new ParseUser();
+                final ParseUser parseUser = new ParseUser();
                 parseUser.setEmail(sMail.getText().toString());
                 parseUser.setUsername(sName.getText().toString());
                 parseUser.setPassword(sPass.getText().toString());
@@ -117,8 +123,14 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                     @Override
                     public void done(ParseException e) {
                         if(e == null){
-                            Intent intent = new Intent(MainActivity.this,HomeActivity.class);
-                            startActivity(intent);
+                            parseUser.put("points",0);
+                            parseUser.saveInBackground(new SaveCallback() {
+                                @Override
+                                public void done(ParseException e) {
+                                    Intent intent = new Intent(MainActivity.this,HomeActivity.class);
+                                    startActivity(intent);
+                                }
+                            });
                         }else{
                             Log.i("err",e.getMessage());
                             Toast.makeText(MainActivity.this, "There was an error " + e.getMessage(), Toast.LENGTH_SHORT).show();

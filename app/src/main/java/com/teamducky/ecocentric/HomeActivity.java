@@ -9,9 +9,13 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.parse.ParseException;
 import com.parse.ParseUser;
 
 public class HomeActivity extends AppCompatActivity {
+
+    private TextView allPointsTxt;
+    private int allPoints;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +29,16 @@ public class HomeActivity extends AppCompatActivity {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                     new HomeFragment()).commit();
         }
+        allPointsTxt = findViewById(R.id.allPointsDisplay);
+        if(ParseUser.getCurrentUser().get("points") == null){
+            ParseUser.logOutInBackground();
+        }
+        try {
+            ParseUser.getCurrentUser().fetchIfNeeded();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        allPointsTxt.setText((float)ParseUser.getCurrentUser().get("points")+"");
     }
     private BottomNavigationView.OnNavigationItemSelectedListener navListener =
             new BottomNavigationView.OnNavigationItemSelectedListener() {

@@ -69,5 +69,7 @@ public class HomeFragment extends Fragment {
         }
         welcomeTextView = getView().findViewById(R.id.welcomeTxt);
         welcomeTextView.setText("Welcome Back " + ParseUser.getCurrentUser().getUsername());
+        welcomeTextView = getView().findViewById(R.id.totalPoints);
+        welcomeTextView.setText("Points: " + ParseUser.getCurrentUser().get("points"));
     }
 }
