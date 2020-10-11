@@ -172,6 +172,7 @@ public class StatsService extends Service implements SensorEventListener{
                     lastLoc = location;
                 }
                 float dist = location.distanceTo(lastLoc);
+                lastLoc = location;
                 switch (currentActivity) {
                     case "walking":
                         distanceWalked += dist;
