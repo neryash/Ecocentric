@@ -58,6 +58,7 @@ import pub.devrel.easypermissions.EasyPermissions;
 import static com.teamducky.ecocentric.App.CHANNEL_ID;
 
 public class StatsService extends Service implements SensorEventListener{
+
     @Override
     public void onCreate() {
         super.onCreate();
