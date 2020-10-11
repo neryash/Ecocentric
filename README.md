@@ -18,6 +18,6 @@ The next things we want to do is to expand into more environmental activities th
 ## Who did what
 We all just did the main development parts on Android Studio, some people dealing with designs at one point and some with the backend and the algorithms at another.
 ## Downloading the app:
-This is and android APK file
+This is the android APK file
 PLEASE ENABLE LOCATION, IT IS VITAL FOR APP PERFORMANCE
 https://drive.google.com/file/d/176X6FqQZtD6AFuWvEgHDMGX5JTRGAQHy/view?usp=sharing
