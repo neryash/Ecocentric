@@ -19,4 +19,4 @@ The next things we want to do is to expand into more environmental activities th
 We all just did the main development parts on Android Studio, some people dealing with designs at one point and some with the backend and the algorithms at another.
 ## Downloading the app:
 This is and android APK file
-https://drive.google.com/file/d/1s1jaRUHfpyV-ldMc4beXnNhHZ42npLfT/view?usp=sharing
+https://drive.google.com/file/d/1hLmbVlytTmyb_6jm0svvDWZuxja3moyS/view?usp=sharing
