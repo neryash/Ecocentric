@@ -2,6 +2,7 @@ package com.teamducky.ecocentric;
 
 import android.animation.ObjectAnimator;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
@@ -81,6 +82,11 @@ public class HomeFragment extends Fragment {
                 SharedPreferences prfs = getActivity().getSharedPreferences("sportsData", Context.MODE_PRIVATE);
                 int allSteps = prfs.getInt("steps", 0);
                 stepsData.setText("Steps: " + allSteps);
+
+                Intent intent = new Intent("updated");
+                intent.setPackage(getActivity().getApplicationContext().getPackageName());
+                intent.putExtra("message","updated");
+                getActivity().getApplicationContext().sendBroadcast(intent);
             }
         });
     }

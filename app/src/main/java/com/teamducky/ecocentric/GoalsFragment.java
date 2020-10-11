@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.gson.Gson;
@@ -67,28 +68,33 @@ public class GoalsFragment extends Fragment {
         getView().findViewById(R.id.submitTasks).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                chosenTasks.clear();
-                int numOfKm = run.isChecked() ? Integer.parseInt(running.getText().toString()) : 0;
-                int score = numOfKm*(60/5);
-                Gson gson1 = new Gson();
-                Task task = new Task(numOfKm, "running", score,run.isChecked());
-                chosenTasks.add(0,gson1.toJson(task));
+                try {
+                    chosenTasks.clear();
+                    int numOfKm = run.isChecked() ? Integer.parseInt(running.getText().toString()) : 0;
+                    int score = numOfKm*(60/5);
+                    Gson gson1 = new Gson();
+                    Task task = new Task(numOfKm, "running", score,run.isChecked());
+                    chosenTasks.add(0,gson1.toJson(task));
 
-                numOfKm = cycle.isChecked() ? Integer.parseInt(cycling.getText().toString()) : 0;
-                score = numOfKm*(60/5);
-                task =  new Task(numOfKm, "cycling", score,cycle.isChecked());
-                chosenTasks.add(1,gson1.toJson(task));
+                    numOfKm = cycle.isChecked() ? Integer.parseInt(cycling.getText().toString()) : 0;
+                    score = numOfKm*(60/5);
+                    task =  new Task(numOfKm, "cycling", score,cycle.isChecked());
+                    chosenTasks.add(1,gson1.toJson(task));
 
-                numOfKm = walk.isChecked() ? Integer.parseInt(walking.getText().toString()) : 0;
-                score = numOfKm*(60/5);
-                task = new Task(numOfKm, "walking", score,walk.isChecked());
-                chosenTasks.add(2,gson1.toJson(task));
-                SharedPreferences preferences = getActivity().getSharedPreferences("sportsData", Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor = preferences.edit();
-                editor.putString("goalss",gson1.toJson(chosenTasks));
-                editor.commit();
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new MindfulFragment()).commit();
+                    numOfKm = walk.isChecked() ? Integer.parseInt(walking.getText().toString()) : 0;
+                    score = numOfKm*(60/5);
+                    task = new Task(numOfKm, "walking", score,walk.isChecked());
+                    chosenTasks.add(2,gson1.toJson(task));
+                    SharedPreferences preferences = getActivity().getSharedPreferences("sportsData", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = preferences.edit();
+                    editor.putString("goalss",gson1.toJson(chosenTasks));
+                    editor.commit();
+                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                            new MindfulFragment()).commit();
+                }catch (Exception e){
+                    Toast.makeText(getContext(),"Please make sure your inputs are valid",Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
     }

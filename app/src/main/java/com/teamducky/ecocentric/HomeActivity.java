@@ -64,7 +64,7 @@ public class HomeActivity extends AppCompatActivity implements EasyPermissions.P
                 startService(intent);
             }
         }
-        allPointsTxt.setText((int)ParseUser.getCurrentUser().get("points")+"");
+        allPointsTxt.setText(ParseUser.getCurrentUser().get("points")+"");
     }
 
     @Override
