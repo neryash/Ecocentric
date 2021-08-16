@@ -26,7 +26,7 @@ import java.util.List;
 
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
-
+// Home activity file
 public class HomeActivity extends AppCompatActivity implements EasyPermissions.PermissionCallbacks{
 
     private BroadcastReceiver mBroadcastReceiver;
